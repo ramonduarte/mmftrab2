@@ -82,96 +82,96 @@ Estes parâmetros foramutilizados junto às probabilidades neutras a risco $\til
 Foram calculados os valores para 10 simulações, tais que $N = 2^{k}; k = 1, 2, ..., 10$.
 
 
+\begin{figure}[]
+	\includegraphics[width=\linewidth*9/10]{Figure_0.png}
+	\centering
+	
+	\label{}
+\end{figure}
+
 
 \begin{figure}[]
-	\includegraphics[width=\linewidth]{Figure_1.png}
+	\includegraphics[width=\linewidth*9/10]{Figure_1.png}
 	\centering
 	
-	\caption{Passeios aleatórios com $S_{0} = 100$, $u = 1.024$, $d = 1/u = 0.9765625$ e $p = q = 0.5$.}
 	\label{}
 \end{figure}
+
+Opções de venda (PUT) têm sua valorização limitada pelo fato de que dependem da queda do valor do ativo.
+Tipicamente, ativos costumam possuir um piso finito, abaixo do qual seu preço não pode cair (neste exemplo, zero).
+Porém, o crescimento é linear no início da curva, até $k = 8$, aproximadamente. 
+
+Opções de compra (CALL), por outro lado, possuem crescimento ilimitado.
+O crescimento é exponencial mesmo utilizando uma base maior ($10$) para o valor inicial do contrato que para o tempo ($k = log_{2} \ N$ neste cenário).
+
+
 
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
 
 
-\section*{2ª Questão}
+\section*{Atividade 2}
 
-Os boxplots foram gerados usando o módulo \emph{matplotlib.pyplot.boxplot}.
-Para facilitar a comparação dos boxplots, eles foram agrupados em subplots no mesmo gráfico.
-\emph{Outliers} foram marcados com quadrados vermelhos.
+Os mesmos contratos da atividade anterior foram recalculados utilizando o Método de Montecarlo.
+Desta vez, as três etapas são:
+
+\begin{enumerate}
+	\item produção dos caminhos a serem percorridos dentro da árvore de possibilidades.
+	\item determinação do valor do contrato para cada caminho (repetido $M$ vezes).
+	\item cálculo da média dos valores encontrados.
+\end{enumerate}
+
+Este método produz resultados estimados, ao passo que o anterior produz resultados tidos como exatos.
+Por isto, para esta atividade, foi fixado o valor de $M=5000$, repetidos os contratos anteriores e comparados os resultados.
+A métrica utilizada foi o erro quadrático médio, para evitar que erros simétricos se anulem.
+
+Os contratos de venda tiveram alta variância no erro quadrático médio, indicando que, se existe, a influência da extensão do prazo (ou redução do intervalo de discretização do tempo) é pequena.
+
+Os contratos de compra, por outro lado, tiveram crescimento exponencial similar ao do próprio valor inicial do contrato.
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{fig1_250.png}
+	\includegraphics[width=\linewidth]{Figure_2.png}
 	\centering
 	
-	\caption{Boxplots com $250$, $500$, $1000$ e $2000$ iterações, respectivamente, de baixo para cima.}
 	\label{}
 \end{figure}
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 2
-%----------------------------------------------------------------------------------------
-
-\section*{3ª Questão}
-
-Para esta questão, os boxplots foram refeitos utilizando os parâmetros $\Delta t = 0.25$ e $u = 1/d = \sqrt{1.024}$.
-Esta configuração gerou uma variância consideravelmente menor, bem como uma quantidade significativamente menor de \emph{outliers}.
-Embora todos os ativos pudessem atingir as mesmas taxas de crescimento e decrescimento que no cenário anterior - apesar das taxas serem menores, o maior número de iterações compensa proporcionalmente a redução -, foram raros os ativos que obtiveram mais de 30\% de variação, um cenário bastante comum na segunda questão.
-
-Este fenômeno foi observado porque, como $E[\bar{S}] = E[S_{0}]$ e $E[S(n)] = E[S(n+1)]$, um número maior de repetições tende a aproximar os resultados da média.
-A redução da variância em distribuições probabilísticas por conta da ampliação do espaço amostral é bastante conhecida e documentada. 
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{fig3_250.png}
+	\includegraphics[width=\linewidth]{Figure_3.png}
 	\centering
 	
-	\caption{Boxplots com $250$, $500$, $1000$ e $2000$ iterações, respectivamente, de baixo para cima.}
 	\label{}
 \end{figure}
 
-
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
 
-\section*{4ª Questão}
+\section*{Atividade 3}
 
-O valor esperado de crescimento dos ativos com estes parâmetros é zero, isto é, $E[S(n)] = E[S(n+1)]$.
-Portanto, o valor esperado para a média é o mesmo que o inicial do ativo: $E[\bar{S}] = E[S_{0}]$.
+Por fim, para esta atividade, foi escolhido o contrato europeu de compra com \emph{lookback}, descrito na página 17 do livro.
+A principal diferença para um contrato europeu de compra regular é a função do valor do contrato:
 
-Os resultados obtidos convergem fortemente para o previsto na teoria.
-A maior variação da média dos passeios aleatórios foi inferior a 3\%, no boxplot $n = 250$ da terceira questão.
+\begin{equation}
+	V_{n} = \max_{0 \leq j \leq n} S_{j}  -  K
+\end{equation}
 
-%----------------------------------------------------------------------------------------
+Os valores são idênticos ao contrato anterior, exceto pelo preço de strike $K = 0$.
+A dependência do caminho está estabelecida pela necessidade de guardar o maior valor que o ativo atingiu previamente.
 
+O \emph{lookback} provê um piso mais elevado ao contrato de opção e, por isso, o crescimento exponencial é observado novamente.
+Os valores iniciais do são ainda mais elevados nesta modalidade.
 
-%----------------------------------------------------------------------------------------
-%	PROBLEM 2
-%----------------------------------------------------------------------------------------
-
-\section*{5ª Questão}
-
-Para esta questão, algumas adaptações fizeram-se necessárias, haja vista os parâmetros selecionados inicialmente.
-Em primeiro lugar, o uso da escala logarítmica aqui dificultaria a visualização dos dados, já que a média, as probabilidades e as taxas foram selecionadas de forma a facilitar a visualização em escala linear.
-Em segundo lugar, foi calculado o erro quadrático médio em vez do módulo do erro médio.
-Na prática, isto não faz nenhuma diferença, exceto que o gráfico observado será uma parábola em vez de uma reta.
-
-Ao contrário do esperado, o erro quadrático médio cresceu com o aumento da distribuição, embora o aumento tenha sido muito reduzido para ser considerado significativo. 
-É provável que este tenha sido um \emph{outlier} em termos de simulação. 
-Pode indicar, ainda, um viés na ferramenta de seleção pseudoaleatória utilizada para implementar a rotina \emph{Random}.
-
+No livro, os autores utilizam o algoritmo da seção 1.3 (o mesmo usado na Atividade 1), porém os tempos são significativamente mais curtos. Para $k \in [1, 2]$, os resultados foram compatíveis. 
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{fig7_250.png}
+	\includegraphics[width=\linewidth]{Figure_5.png}
 	\centering
 	
-	\caption{Erro quadrático médio encontrado com $250$, $500$, $1000$ e $2000$ iterações, respectivamente, de baixo para cima.}
 	\label{}
 \end{figure}
 
-%----------------------------------------------------------------------------------------
 
 
 \end{document}
