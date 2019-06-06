@@ -2,10 +2,6 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-## TODO: generate stocks final values 2019-06-04 22:11:51
-## TODO: generate intermediate values for each n-1 2019-06-04 22:12:26
-## TODO: get to v0
-
 
 def ativ1(contract="call", k=9):
     N = 2**k
@@ -50,6 +46,9 @@ def ativ2(contract="call", M=5000, k=9):
 
     return v0
 
+
+def ativ3(M=5000, k=9):
+    return
 
 
 
