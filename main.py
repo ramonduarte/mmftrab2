@@ -1,6 +1,7 @@
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+import tqdm
 
 
 def ativ1(contract="call", k=9):
@@ -48,18 +49,38 @@ def ativ2(contract="call", M=5000, k=9):
 
 
 def ativ3(M=5000, k=9):
-    return
+    N = 2**k
+    u = 2
+    s0 = 4
+    r = 0.25
+    strike = 0
+    p = 0.5
+    v0 = 0
+
+
+    for m in tqdm.tqdm(range(M)):
+        s = s0
+        for n in range(N):
+            s = random.choice([2*s, s])
+        v0 = (v0*m + s)/(m+1)
+
+
+    return v0
 
 
 
 if __name__ == "__main__":
     # # with open("ativ1_put.txt", "w") as filename:
     # with open("ativ1_call.txt", "w") as filename:
-    #     for i in range(1, 13):
+    #     for i in tqdm.tqdm(range(1, 13)):
     #         # filename.write(str(i) + " -> " + str(ativ1("put",i)) + "\n")
     #         filename.write(str(i) + " -> " + str(ativ1("call",i)) + "\n")
 
+    # with open("ativ2.txt", "w") as filename:
+    #     for i in tqdm.tqdm(range(1, 13)):
+    #         filename.write(str(i) + " -> " + str(ativ2("call", M=5000, k=i)) + " CALL\n")
+    #         filename.write(str(i) + " -> " + str(ativ2("put", M=5000, k=i)) + " PUT\n")
+
     with open("ativ2.txt", "w") as filename:
         for i in range(1, 13):
-            filename.write(str(i) + " -> " + str(ativ2("call", M=5000, k=i)) + " CALL\n")
-            filename.write(str(i) + " -> " + str(ativ2("put", M=5000, k=i)) + " PUT\n")
+            filename.write(str(i) + " -> " + str(ativ3(M=5000, k=i)) + "\n")
